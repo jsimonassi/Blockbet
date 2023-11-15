@@ -6,11 +6,11 @@ interface AppProviderProps {
 }
 
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-    return (
-        <SessionProvider>
-            {children}
-        </SessionProvider>
-    );
+	return (
+		<SessionProvider>
+			{children}
+		</SessionProvider>
+	);
 };
 
 export default AppProvider;
