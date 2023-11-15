@@ -1,6 +1,6 @@
-import {DefaultTheme} from 'styled-components/native';
+import { AppTheme } from '../../types/StyledComponents/AppTheme';
 
-const DARK_THEME: DefaultTheme = {
+const DARK_THEME: AppTheme = {
   palette: {
     primaryColor: '#E27031',
     pageBackground: '#4C4C4C',

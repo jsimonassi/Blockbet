@@ -10,8 +10,7 @@ import GlobalStyle from './assets/styles/GlobalStyle';
 const MainRouter = () => {
   const sessionContext = useSessionContext();
 
-  // if (sessionContext.currentSession) { //Is Logged?
-  if (true) { //Is Logged?
+  if (sessionContext.currentSession) { //Is Logged?
     return (<LoggedRoutes />);
   }
 
