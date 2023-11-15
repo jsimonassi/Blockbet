@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { AuthRoutes, LoggedRoutes } from "./routes";
+import { useSessionContext } from "./contexts/Session";
+import { ThemeProvider } from "styled-components";
+import AppProvider from "./contexts";
+import { CONSTANTS } from "./constants";
+import GlobalStyle from "./assets/styles/GlobalStyle";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const MainRouter = () => {
+	const sessionContext = useSessionContext();
+
+	if (sessionContext.currentSession) { //Is Logged?
+		return (<LoggedRoutes />);
+	}
+
+	return (<AuthRoutes />);
+};
+
+
+const App = () => {
+
+	return (
+	// Can be replaced by useTheme, if you want to change the theme dynamically
+		<ThemeProvider theme={CONSTANTS.THEMES.DARK_THEME}> 
+			<AppProvider>
+				<GlobalStyle />
+				<MainRouter />
+			</AppProvider>
+		</ThemeProvider>
+	);
+
+};
 
 export default App;
