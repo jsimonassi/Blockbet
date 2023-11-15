@@ -2,5 +2,6 @@ import "styled-components";
 import { AppTheme } from "../AppTheme";
 
 declare module "styled-components" {
-  export type DefaultTheme = AppTheme
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefaultTheme extends AppTheme {}
 }
