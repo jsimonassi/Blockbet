@@ -1,7 +1,7 @@
-import { AuthRoutes } from './AuthRoutes';
-import { LoggedRoutes } from './LoggedRoutes';
+import { AuthRoutes } from "./AuthRoutes";
+import { LoggedRoutes } from "./LoggedRoutes";
 
 export {
-    AuthRoutes,
-    LoggedRoutes,
-}
+	AuthRoutes,
+	LoggedRoutes,
+};
