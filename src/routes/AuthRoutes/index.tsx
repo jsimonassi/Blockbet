@@ -6,21 +6,12 @@ import {
 } from "react-router-dom";
 import { CONSTANTS } from "../../constants";
 import { Home } from "../../pages";
-// import { useAppTheme } from "../contexts/Theme";
-// import "../assets/styles/App.css";
-// import GlobalStyle from "../assets/styles/GlobalStyle";
-// import CONSTANTS from "../constants";
-// import PrivateRoute from "../services/auth/PrivateRoute";
-// import Menu from "../components/Menu";
-// import { About, ErrorPage, MyClasses, OldClasses, PostLogin } from "../pages";
 
 export const AuthRoutes = () => {
 
-	// const { currentTheme } = useAppTheme();
 
 	return (
 		<Router>
-			{/* <GlobalStyle theme={currentTheme} /> */}
 			<Routes>
 				<Route path={CONSTANTS.ROUTES.SIGN_IN} element={<Home />}/> 
 			</Routes>
