@@ -9,6 +9,7 @@ export interface AppTheme {
 
         gradientStart: string,
         gradientEnd: string,
+        viniBackground: string,
 
         textPrimary: string,
         icons: string,

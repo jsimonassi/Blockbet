@@ -15,7 +15,7 @@ export const AuthRoutes = () => {
 		<Router>
 			<Routes>
 				{/* If enter in this stack without login, redirect */}
-				<Route path="/" element={<Navigate to={CONSTANTS.ROUTES.SIGN_IN} />} />
+				<Route path="*" element={<Navigate to={CONSTANTS.ROUTES.SIGN_IN} />} />
 				<Route path={CONSTANTS.ROUTES.SIGN_IN} element={<SignIn />} />
 			</Routes>
 		</Router>

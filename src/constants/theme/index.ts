@@ -12,6 +12,8 @@ const DARK_THEME: AppTheme = {
 		gradientStart: "#E27031",
 		gradientEnd: "#B56639",
 
+		viniBackground: "#7C462B",
+
 		textPrimary: "#FFFFFF",
 		icons: "#FFFFFF",
 
