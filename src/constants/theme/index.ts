@@ -1,26 +1,29 @@
+/* eslint-disable indent */
 import { AppTheme } from "../../types/StyledComponents/AppTheme";
 
 const DARK_THEME: AppTheme = {
-	palette: {
-		primaryColor: "#E27031",
-		pageBackground: "#4C4C4C",
+  palette: {
+    primaryColor: "#E27031",
+    pageBackground: "#4C4C4C",
+    navbar: "#262727",
+    surface1: "#737373", //Cards and first layer surfaces
+    surface2: "#D9D9D9", // Surface over surface1
+    surface3: "#272727", //Header and footer, if exists
 
-		surface1: "#737373", //Cards and first layer surfaces
-		surface2: "#D9D9D9", // Surface over surface1
-		surface3: "#272727", //Header and footer, if exists
+    gradientStart: "#E27031",
+    gradientEnd: "#B56639",
 
-		gradientStart: "#E27031",
-		gradientEnd: "#B56639",
+    viniBackground: "#7C462B",
 
-		viniBackground: "#7C462B",
+    textPrimary: "#FFFFFF",
+    icons: "#FFFFFF",
 
-		textPrimary: "#FFFFFF",
-		icons: "#FFFFFF",
+    modalBackdrop: "#0000007D",
 
-		modalBackdrop: "#0000007D",
-	},
+    navbarCreateBetButton: "#E8671E",
+  },
 };
 
 export const THEMES = {
-	DARK_THEME,
+  DARK_THEME,
 };
