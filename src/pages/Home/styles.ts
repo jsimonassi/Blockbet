@@ -115,3 +115,25 @@ export const AvailBetText = styled.h1`
   font-style: bold;
   font-size: 20px;
 `;
+
+export const ButtonDrawBet = styled.button`
+  background-color: #fff;
+  border-radius: 5px;
+  color: #fff;
+  height: 4vh;
+  width: 5vw;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
+export const ButtonCoverBet = styled.button`
+  background-color: ${(props) => props.theme.palette.navbarCreateBetButton};
+  border-radius: 5px;
+  color: #fff;
+  height: 4vh;
+  width: 5vw;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+`;

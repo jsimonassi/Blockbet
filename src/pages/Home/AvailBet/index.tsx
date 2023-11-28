@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { Modal, Box } from "@material-ui/core";
+
 import { MainText } from "../../../components";
 import {
   ContainerBet,
@@ -9,9 +11,13 @@ import {
   UserContainer,
 } from "./styles";
 
-export const AvailBet = () => {
+interface AvailBetProps {
+  handleClickBet: () => void;
+}
+
+export const AvailBet = ({ handleClickBet }: AvailBetProps) => {
   return (
-    <ContainerBet>
+    <ContainerBet onClick={handleClickBet}>
       <InfoBet>
         <UserContainer>
           <MainText type="Bold" style={{ fontSize: "22px" }}>
