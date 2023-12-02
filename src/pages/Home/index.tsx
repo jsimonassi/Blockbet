@@ -6,6 +6,9 @@ import {
   Dialog,
   DialogContent,
   WithStyles,
+  DialogTitle,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { MainText } from "../../components";
@@ -14,6 +17,7 @@ import { AvailBet } from "./AvailBet";
 import { ShieldImage } from "./AvailBet/styles";
 import {
   AvailBetText,
+  BetInput,
   BrasileiraoText,
   ButtonCoverBet,
   ButtonDrawBet,
@@ -31,15 +35,10 @@ import {
   TrophyStyled,
 } from "./styles";
 
-const styles = {
-  dialogPaper: {
-    minHeight: "80vh",
-    maxHeight: "80vh",
-  },
-};
-
 export const Home = ({ classes }: any) => {
   const [openModal, setOpenModal] = useState(false);
+
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleClickBet = () => {
     setOpenModal((prev) => !prev);
@@ -111,18 +110,12 @@ export const Home = ({ classes }: any) => {
               alignItems: "flex-start",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                marginTop: "2vh",
-                marginLeft: "1vw",
-              }}
-            >
-              <MainText type="Bold" style={{ fontSize: "15px" }}>
+            <DialogTitle style={{ display: "flex" }}>
+              <MainText type="Bold" align="left" style={{ fontSize: "15px" }}>
                 Confirmar aposta
               </MainText>
-            </div>
+            </DialogTitle>
+
             <DialogContent
               style={{
                 display: "column",
@@ -135,6 +128,8 @@ export const Home = ({ classes }: any) => {
                   justifyContent: "center",
                   alignItems: "center",
                   width: "100%",
+                  gap: "1vw",
+                  marginBottom: "1vh",
                 }}
               >
                 <ShieldImage
@@ -161,57 +156,68 @@ export const Home = ({ classes }: any) => {
               <div
                 style={{
                   display: "column",
-                  justifyContent: "flex-start",
                   width: "100%",
                   alignItems: "flex-start",
+                  marginTop: "2vh",
                 }}
               >
-                <MainText type="Bold" style={{ fontSize: "15px" }}>
+                <MainText type="Bold" align="left" style={{ fontSize: "15px" }}>
                   Gustavo Luppi Siloto
                 </MainText>
-                <div style={{ display: "flex" }}>
-                  <MainText
-                    type="Bold"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    ●
-                  </MainText>
-                  <MainText
-                    type="Bold"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    Botafogo vence
-                  </MainText>
+                <div
+                  style={{
+                    display: "column",
+                    marginLeft: "1vw",
+                    marginBottom: "1vh",
+                    marginTop: "1vh",
+                  }}
+                >
+                  <div style={{ display: "flex", marginBottom: "1vh" }}>
+                    <MainText
+                      type="Bold"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      ●
+                    </MainText>
+                    <MainText
+                      type="Bold"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      Botafogo vence
+                    </MainText>
+                  </div>
+
+                  <div style={{ display: "flex", marginBottom: "1vh" }}>
+                    <MainText
+                      type="Bold"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      ●
+                    </MainText>
+                    <MainText
+                      type="Medium"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      Valor R$ 50,00
+                    </MainText>
+                  </div>
+                  <div style={{ display: "flex", marginBottom: "1vh" }}>
+                    <MainText
+                      type="Bold"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      ●
+                    </MainText>
+                    <MainText
+                      type="Medium"
+                      style={{ fontSize: "14px", color: "#C7C7C7" }}
+                    >
+                      ODD 2.0
+                    </MainText>
+                  </div>
                 </div>
-                <div style={{ display: "flex" }}>
-                  <MainText
-                    type="Bold"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    ●
-                  </MainText>
-                  <MainText
-                    type="Medium"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    Valor R$ 50,00
-                  </MainText>
-                </div>
-                <div style={{ display: "flex" }}>
-                  <MainText
-                    type="Bold"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    ●
-                  </MainText>
-                  <MainText
-                    type="Medium"
-                    style={{ fontSize: "14px", color: "#C7C7C7" }}
-                  >
-                    ODD 2.0
-                  </MainText>
-                </div>
-                <div style={{ display: "flex" }}>
+
+                <div style={{ display: "flex", marginBottom: "0.5vh" }}>
                   <MainText type="Medium" style={{ fontSize: "14px" }}>
                     Valor da cobertura:
                   </MainText>
@@ -221,12 +227,39 @@ export const Home = ({ classes }: any) => {
                     borderRadius: "8px",
                     border: "0px",
                     backgroundColor: "#D9D9D9",
-                    height: "3vh",
-                    width: "7vw",
+                    height: "5vh",
+                    width: "9vw",
                     outline: "none",
                   }}
                 ></input>
               </div>
+              <FormControlLabel
+                style={{
+                  color: "",
+                }}
+                color="primary"
+                control={<Checkbox color="primary" size="small" />}
+                label={
+                  <div style={{ display: "flex" }}>
+                    <MainText
+                      type="Medium"
+                      style={{
+                        fontSize: "14px",
+                        color: "#c7c7c7",
+                        marginRight: "4px",
+                      }}
+                    >
+                      Concordo com os
+                    </MainText>
+                    <MainText
+                      type="Medium"
+                      style={{ fontSize: "14px", color: "#5FA5E5" }}
+                    >
+                      termos de uso
+                    </MainText>
+                  </div>
+                }
+              />
               <div
                 style={{
                   display: "flex",

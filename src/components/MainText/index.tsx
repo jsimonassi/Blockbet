@@ -5,15 +5,23 @@ interface IMainTextProps {
   type: "Light" | "Medium" | "Bold";
   children: React.ReactNode;
   style?: React.CSSProperties;
+  align?:
+    | "start"
+    | "end"
+    | "left"
+    | "right"
+    | "center"
+    | "justify"
+    | "match-parent";
 }
 
-export const MainText = ({ type, children, style }: IMainTextProps) => {
+export const MainText = ({ type, children, style, align }: IMainTextProps) => {
   const currentTheme = useTheme();
 
   const getCommonStyle = (): React.CSSProperties => {
     return {
       color: currentTheme.palette.textPrimary,
-      textAlign: "center",
+      textAlign: align ? align : "center",
     };
   };
 

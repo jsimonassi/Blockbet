@@ -53,6 +53,10 @@ export const CreateBetButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 18px;
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const PageContainer = styled.div`
@@ -136,4 +140,13 @@ export const ButtonCoverBet = styled.button`
   border: none;
   cursor: pointer;
   font-size: 18px;
+`;
+
+export const BetInput = styled.input`
+  border-radius: "8px";
+  border: "0px";
+  background-color: "#D9D9D9";
+  height: "5vh";
+  width: "5vw";
+  outline: "none";
 `;

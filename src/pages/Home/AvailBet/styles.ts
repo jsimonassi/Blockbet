@@ -3,12 +3,17 @@ import styled from "styled-components";
 export const ContainerBet = styled.div`
   display: flex;
   width: 100%;
-  height: 15vh;
+  height: 100%;
   background-color: ${(props) => props.theme.palette.surface1};
   border-radius: 20px;
   text-align: "left";
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   margin-bottom: 2vh;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const InfoBet = styled.div`
