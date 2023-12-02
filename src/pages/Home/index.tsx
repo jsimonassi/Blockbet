@@ -8,7 +8,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { MainText, Navbar } from "../../components";
+import { MainText, Navbar, OverlayBackground, PageContainer } from "../../components";
 import { THEMES } from "../../constants/theme";
 import { AvailBet } from "./AvailBet";
 import { ShieldImage } from "./AvailBet/styles";
@@ -16,9 +16,7 @@ import {
   BrasileiraoText,
   ButtonCoverBet,
   ButtonDrawBet,
-  OverlayBackgroundStyled,
   OverlayBrasileiro,
-  PageContainer,
   TextOverlayBrasileiro,
   TitleOverlayBrasileiro,
   TrophyContainer,
@@ -35,7 +33,7 @@ export const Home = ({ classes }: any) => {
   };
 
   return (
-    <OverlayBackgroundStyled>
+    <OverlayBackground>
       <Navbar />
       <PageContainer>
         <OverlayBrasileiro>
@@ -265,6 +263,6 @@ export const Home = ({ classes }: any) => {
           </Box>
         </Dialog>
       )}
-    </OverlayBackgroundStyled>
+    </OverlayBackground>
   );
 };

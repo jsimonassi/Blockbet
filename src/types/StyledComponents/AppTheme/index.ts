@@ -12,6 +12,7 @@ export interface AppTheme {
     viniBackground: string;
 
     textPrimary: string;
+    textSecondary: string;
     icons: string;
 
     modalBackdrop: string;

@@ -6,7 +6,7 @@ import {
 	Navigate
 } from "react-router-dom";
 import { CONSTANTS } from "../../constants";
-import { SignIn } from "../../pages/SignIn";
+import { SignIn } from "../../pages";
 
 export const AuthRoutes = () => {
 

@@ -16,6 +16,7 @@ const DARK_THEME: AppTheme = {
     viniBackground: "#7C462B",
 
     textPrimary: "#FFFFFF",
+    textSecondary: "#C7C7C7",
     icons: "#FFFFFF",
 
     modalBackdrop: "#0000007D",
