@@ -1,10 +1,13 @@
-import {useState} from "react";
+import { useState } from "react";
+import { MetaMaskUser } from "../../../types/User";
 
 export const useSessionData = () => {
-	const [currentSession, setCurrentSession] = useState<string | null>(null); //Put here infos about metameask account
+  const [currentSession, setCurrentSession] = useState<MetaMaskUser | null>(
+    null
+  );
 
-	return {
-		currentSession,
-		setCurrentSession
-	};
+  return {
+    currentSession,
+    setCurrentSession,
+  };
 };
