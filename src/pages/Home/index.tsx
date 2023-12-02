@@ -1,31 +1,21 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import {
-  Modal,
   Box,
-  Typography,
   Dialog,
   DialogContent,
-  WithStyles,
   DialogTitle,
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { MainText } from "../../components";
+import { MainText, Navbar } from "../../components";
 import { THEMES } from "../../constants/theme";
 import { AvailBet } from "./AvailBet";
 import { ShieldImage } from "./AvailBet/styles";
 import {
-  AvailBetText,
-  BetInput,
   BrasileiraoText,
   ButtonCoverBet,
   ButtonDrawBet,
-  CreateBetButton,
-  ExpandableInfosStyled,
-  LogoStyled,
-  Navbar,
-  NavbarProfile,
   OverlayBackgroundStyled,
   OverlayBrasileiro,
   PageContainer,
@@ -46,18 +36,7 @@ export const Home = ({ classes }: any) => {
 
   return (
     <OverlayBackgroundStyled>
-      <Navbar>
-        <ExpandableInfosStyled>
-          <LogoStyled
-            src={require("../../assets/images/logo.png")}
-            alt="Logo"
-          />
-        </ExpandableInfosStyled>
-        <NavbarProfile>
-          <CreateBetButton>CRIAR APOSTA</CreateBetButton>
-          PERFIL
-        </NavbarProfile>
-      </Navbar>
+      <Navbar />
       <PageContainer>
         <OverlayBrasileiro>
           <TextOverlayBrasileiro>
