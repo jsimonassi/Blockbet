@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useState } from "react";
 import {
   ContainerStyled,
   ExpandableInfosStyled,
@@ -14,9 +14,11 @@ import { MainButton, MainText } from "../../components";
 import { useSessionContext } from "../../contexts/Session";
 import { ethers } from "ethers";
 import { MetaMaskUser } from "../../types/User";
+import { ModalMetamaskNotFound } from "./Components";
 
 export const SignIn = () => {
   const sessionContext = useSessionContext();
+  const [notFoundModal, setNotFoundModal] = useState(false);
 
   const getbalance = (address: string) => {
     // Requesting balance method
@@ -45,7 +47,7 @@ export const SignIn = () => {
         .request({ method: "eth_requestAccounts" })
         .then((res: string[]) => getbalance(res[0]));
     } else {
-      alert("install metamask extension!!");
+      setNotFoundModal(true);
     }
   };
 
@@ -76,6 +78,11 @@ export const SignIn = () => {
           alt="Vinícius Júnior"
         />
       </RightSideStyled>
+      <ModalMetamaskNotFound
+        visible={notFoundModal}
+        onClose={() => setNotFoundModal(false)}
+        onInstallMetamask={() => window.open("https://metamask.io/download/")}
+        />
     </ContainerStyled>
   );
 };
