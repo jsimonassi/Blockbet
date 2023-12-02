@@ -6,7 +6,7 @@ import {
 	Navigate
 } from "react-router-dom";
 import { CONSTANTS } from "../../constants";
-import { Home } from "../../pages";
+import { CreateBet, Home } from "../../pages";
 
 
 export const LoggedRoutes = () => {
@@ -16,6 +16,7 @@ export const LoggedRoutes = () => {
 			<Routes>
 				<Route path="*" element={<Navigate to={CONSTANTS.ROUTES.HOME} />} />
 				<Route path={CONSTANTS.ROUTES.HOME} element={<Home />}/> 
+				<Route path={CONSTANTS.ROUTES.CREATE_BET} element={<CreateBet />}/> 
 			</Routes>
 		</Router>
 	);

@@ -28,6 +28,12 @@
     src: local("Nunito-Medium"), url("../fonts/Nunito/Nunito-Medium.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "NovaFlat";
+    /*Can be any text*/
+    src: local("NovaFlat-Regular"), url("../fonts/NovaFlat/NovaFlat-Regular.ttf") format("truetype");
+}
+
 * {
     margin: 0;
     padding: 0;
