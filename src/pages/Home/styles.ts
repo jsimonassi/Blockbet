@@ -15,11 +15,6 @@ export const CreateBetButton = styled.button`
   }
 `;
 
-export const PageContainer = styled.div`
-  width: 70vw;
-  height: 20vh;
-`;
-
 export const OverlayBrasileiro = styled.div`
   display: flex;
   flex-direction: "row";

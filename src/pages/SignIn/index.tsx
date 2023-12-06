@@ -31,10 +31,10 @@ export const SignIn = () => {
         // Setting balance
         const user: MetaMaskUser = {
           address,
-          balance: Number(ethers.formatEther(balance)),
+          balance: Number(ethers.utils.formatEther(balance)),
         };
         console.log(balance, "balance");
-        console.log(ethers.formatEther(balance), "SALDO CONTA");
+        console.log(ethers.utils.formatEther(balance), "SALDO CONTA");
         sessionContext.setCurrentSession(user);
       });
   };

@@ -4,6 +4,7 @@ import { MatchCard, SelectChampionship } from "./Components";
 import { ResultsContainer, ResultsMatches } from "./styles";
 import { Match } from "../../types/api/Match";
 import { Api } from "../../services";
+import { createBetTest } from "../../services/blockchain";
 
 export const CreateBet = () => {
 
@@ -13,6 +14,11 @@ export const CreateBet = () => {
         Api.getMatches(10).then((response) => {
             setAvailableMatches(response);
         });
+    };
+
+    const handleCreateBet = () => {
+        console.log("Cliquei");
+        createBetTest();
     };
 
     return (
@@ -28,7 +34,7 @@ export const CreateBet = () => {
                             {
                                 availableMatches.map((match, index) => {
                                     return (
-                                        <MatchCard key={index} match={match} onClick={() => null} />
+                                        <MatchCard key={index} match={match} onClick={handleCreateBet} />
                                     );
                                 })
                             }
