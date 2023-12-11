@@ -10,6 +10,8 @@ import { ResultsContainer, ResultsMatches } from "./styles";
 import { Match } from "../../types/api/Match";
 import { Api } from "../../services";
 import { CreateBetModal } from "./Components/CreateBetModal";
+import { CircularProgress } from "@material-ui/core";
+import { THEMES } from "../../constants/theme";
 
 export const CreateBet = () => {
   const [availableMatches, setAvailableMatches] = useState<Match[] | null>(
@@ -45,7 +47,10 @@ export const CreateBet = () => {
     },
   });
 
+  const [loading, setLoading] = useState(false);
+
   const onChampionshipClick = async () => {
+    setLoading(true);
     Api.getMatches(10).then((response) => {
       setAvailableMatches(response);
     });
@@ -56,8 +61,10 @@ export const CreateBet = () => {
   };
 
   useEffect(() => {
-    console.log(isOpen, "isOpen");
-  });
+    setLoading(false);
+  }, [availableMatches]);
+
+  console.log(loading, "loading");
   return (
     <OverlayBackground>
       <Navbar />
@@ -66,12 +73,26 @@ export const CreateBet = () => {
           championshipList={["Brasileirão"]}
           onChampionshipClick={onChampionshipClick}
         />
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "6vh",
+            }}
+          >
+            <CircularProgress
+              style={{ color: THEMES.DARK_THEME.palette.primaryColor }}
+            />{" "}
+          </div>
+        )}
         {availableMatches && availableMatches.length > 0 && (
           <ResultsContainer>
             <MainText type="Light" style={{ fontSize: "22px" }}>
               {" "}
               Escolha uma partida:{" "}
             </MainText>
+
             <ResultsMatches>
               {availableMatches.map((match, index) => {
                 return (

@@ -36,6 +36,9 @@ export const CreateBetModal = ({
   const [disabledWinHome, setDisabledWinHome] = useState(false);
   const [disabledWinAway, setDisabledWinAway] = useState(false);
   const [disabledWinDraw, setDisabledWinDraw] = useState(false);
+  const [surfaceHome, setSurfaceHome] = useState(false);
+  const [surfaceAway, setSurfaceAway] = useState(false);
+
   const [value, setValue] = useState("");
   const [checkboxValue, setCheckboxValue] = useState(false);
 
@@ -69,10 +72,52 @@ export const CreateBetModal = ({
 
   useEffect(() => {
     handleDisableCreateBetButton();
+    if (!disabledWinHome) {
+      setSurfaceHome(true);
+      setSurfaceAway(false);
+    }
+    if (!disabledWinAway) {
+      setSurfaceHome(false);
+      setSurfaceAway(true);
+    }
+    if (!disabledWinDraw) {
+      setSurfaceHome(false);
+      setSurfaceAway(false);
+    }
   }, [disabledWinHome, disabledWinAway, disabledWinDraw, value, checkboxValue]);
 
+  const handleResetAll = () => {
+    setSurfaceHome(false);
+    setSurfaceAway(false);
+    setValue("");
+    setCheckboxValue(false);
+    setDisabledWinAway(true);
+    setDisabledWinDraw(true);
+    setDisabledWinHome(true);
+  };
+
+  const createBet = async () => {
+    // try{
+    //   const response = api.post("/")
+    // }catch(error) {
+    //   console.log(error)
+    // }
+    console.log("cliquei");
+  };
+
+  useEffect(() => {
+    setSurfaceHome(false);
+    setSurfaceAway(false);
+  }, []);
+
   return (
-    <Dialog open={isOpen} onClose={handleClick}>
+    <Dialog
+      open={isOpen}
+      onClose={() => {
+        handleClick();
+        handleResetAll();
+      }}
+    >
       <div
         style={{
           backgroundColor: THEMES.DARK_THEME.palette.surface1,
@@ -94,7 +139,10 @@ export const CreateBetModal = ({
         </MainText>
         <div
           style={{ marginRight: "2%", marginTop: "2%", cursor: "pointer" }}
-          onClick={handleClick}
+          onClick={() => {
+            handleClick();
+            handleResetAll();
+          }}
         >
           <MainText
             type="Bold"
@@ -117,7 +165,7 @@ export const CreateBetModal = ({
         }}
       >
         <EscudosContainer>
-          <SelectedTeam selected={!disabledWinHome}>
+          <SelectedTeam selected={surfaceHome}>
             <img src={match.time_mandante.escudo} alt="Escudo" />
           </SelectedTeam>
           <MainText
@@ -129,7 +177,7 @@ export const CreateBetModal = ({
           >
             X
           </MainText>
-          <SelectedTeam selected={!disabledWinAway}>
+          <SelectedTeam selected={surfaceAway}>
             <img src={match.time_visitante.escudo} alt="Escudo" />
           </SelectedTeam>
         </EscudosContainer>
@@ -272,7 +320,10 @@ export const CreateBetModal = ({
             </div>
           }
         />
-        <CreateBetButton disabledButton={disabledCreateButton}>
+        <CreateBetButton
+          disabledButton={disabledCreateButton}
+          onClick={createBet}
+        >
           <MainText type="Medium" style={{ fontSize: "15px" }}>
             Criar aposta
           </MainText>

@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+interface DrawButtonProps {
+  disabledDraw: boolean;
+}
+
+interface WinButtonProps {
+  disabledWin: boolean;
+}
+
 export const CreateBetButton = styled.button`
   background-color: ${(props) => props.theme.palette.navbarCreateBetButton};
   border-radius: 5px;
@@ -76,24 +84,26 @@ export const AvailBetText = styled.h1`
   font-size: 20px;
 `;
 
-export const ButtonDrawBet = styled.button`
+export const ButtonDrawBet = styled.button<DrawButtonProps>`
   background-color: #fff;
   border-radius: 5px;
   color: #fff;
   height: 4vh;
   width: 5vw;
   border: none;
+  opacity: ${(props) => (props.disabledDraw ? 0.5 : 1)};
   cursor: pointer;
   font-size: 18px;
 `;
 
-export const ButtonCoverBet = styled.button`
+export const ButtonCoverBet = styled.button<WinButtonProps>`
   background-color: ${(props) => props.theme.palette.navbarCreateBetButton};
   border-radius: 5px;
   color: #fff;
   height: 4vh;
   width: 5vw;
   border: none;
+  opacity: ${(props) => (props.disabledWin ? 0.5 : 1)};
   cursor: pointer;
   font-size: 18px;
 `;
