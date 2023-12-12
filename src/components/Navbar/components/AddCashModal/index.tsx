@@ -16,12 +16,14 @@ import toast from "react-hot-toast";
 interface CreateBetModalProps {
   isOpen: boolean;
   handleClose: () => void;
+  requestUpdateBalance: () => void;
   address: string;
 }
 
 export const AddCashModal = ({
   isOpen,
   handleClose,
+  requestUpdateBalance,
   address,
 }: CreateBetModalProps) => {
 
@@ -50,7 +52,7 @@ export const AddCashModal = ({
       console.log(e);
     }finally{
       toast.dismiss(toastRef);
-      handleClose();
+      requestUpdateBalance();
     }
   };
 

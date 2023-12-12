@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ExpandableInfosStyled,
   LogoStyled,
@@ -13,6 +13,8 @@ import { ReactComponent as ProfileIcon } from "../../assets/images/profile.svg";
 import { Menu, MenuItem } from "@material-ui/core";
 import { useSessionContext } from "../../contexts/Session";
 import { AddCashModal } from "./components/AddCashModal";
+import { BlockchainService } from "../../services/blockchain";
+import { MetaMaskUser } from "../../types/User";
 
 enum AvailableActions {
   BUY_COINS = "Comprar Fire Coins",
@@ -22,11 +24,24 @@ enum AvailableActions {
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const {logout, currentSession} = useSessionContext();
+  const { logout, currentSession, updateCurrentUser } = useSessionContext();
   const [addCashModalIsOpen, setAddCashModalIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    refreshBalance();
+  }, []);
+
+  const refreshBalance = () => {
+    BlockchainService.getBalance(currentSession?.address ?? "").then((balance) => {
+      updateCurrentUser({
+        ...currentSession,
+        balance
+      } as MetaMaskUser);
+    });
+  };
 
   const handleOpenDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +69,7 @@ export const Navbar = () => {
 
   return (
     <NavbarStyled>
-      <AddCashModal isOpen={addCashModalIsOpen} address={currentSession?.address ?? ""} handleClose={() => setAddCashModalIsOpen(false)}/>
+      <AddCashModal isOpen={addCashModalIsOpen} address={currentSession?.address ?? ""} handleClose={() => setAddCashModalIsOpen(false)} requestUpdateBalance={refreshBalance} />
       <ExpandableInfosStyled onClick={() => navigate(CONSTANTS.ROUTES.HOME)}>
         <LogoStyled src={require("../../assets/images/logo.png")} alt="Logo" />
       </ExpandableInfosStyled>
@@ -65,8 +80,8 @@ export const Navbar = () => {
           </MainText>
         </CreateBetButton>
         <MainText type="Medium" align="center">
-            FireCoins: {currentSession?.balance ?? 0}
-          </MainText>
+          FireCoins: {currentSession?.balance ?? 0}
+        </MainText>
         <div>
           <ProfileIcon
             style={{ width: "50px", height: "50px", cursor: "pointer" }}

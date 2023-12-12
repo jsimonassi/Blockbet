@@ -112,7 +112,7 @@ export const CreateBet = () => {
           </ResultsContainer>
         )}
       </PageContainer>
-      <CreateBetModal isOpen={isOpen} handleClick={handleClick} match={match} />
+      <CreateBetModal isOpen={isOpen} handleClose={handleClick} match={match} />
     </OverlayBackground>
   );
 };

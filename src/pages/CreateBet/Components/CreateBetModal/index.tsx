@@ -3,10 +3,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControlLabel,
 } from "@material-ui/core";
-import { match } from "assert";
 import React, { useEffect, useState } from "react";
 import { MainText } from "../../../../components";
 import { Match } from "../../../../types/api/Match";
@@ -20,16 +18,20 @@ import {
   WinButton,
 } from "./styles";
 import { THEMES } from "../../../../constants/theme";
+import { Bet } from "../../../../types/Bet";
+import { useSessionContext } from "../../../../contexts/Session";
+import { BlockchainService } from "../../../../services/blockchain";
+import { toast } from "react-hot-toast";
 
 interface CreateBetModalProps {
   isOpen: boolean;
-  handleClick: () => void;
+  handleClose: () => void;
   match: Match;
 }
 
 export const CreateBetModal = ({
   isOpen,
-  handleClick,
+  handleClose,
   match,
 }: CreateBetModalProps) => {
   const [disabledCreateButton, setDisabledCreateButton] = useState(true);
@@ -38,6 +40,8 @@ export const CreateBetModal = ({
   const [disabledWinDraw, setDisabledWinDraw] = useState(false);
   const [surfaceHome, setSurfaceHome] = useState(false);
   const [surfaceAway, setSurfaceAway] = useState(false);
+
+  const {currentSession} = useSessionContext();
 
   const [value, setValue] = useState("");
   const [checkboxValue, setCheckboxValue] = useState(false);
@@ -91,18 +95,33 @@ export const CreateBetModal = ({
     setSurfaceAway(false);
     setValue("");
     setCheckboxValue(false);
-    setDisabledWinAway(true);
-    setDisabledWinDraw(true);
-    setDisabledWinHome(true);
+    setDisabledWinAway(false);
+    setDisabledWinDraw(false);
+    setDisabledWinHome(false);
   };
 
   const createBet = async () => {
-    // try{
-    //   const response = api.post("/")
-    // }catch(error) {
-    //   console.log(error)
-    // }
-    console.log("cliquei");
+
+    handleClose();
+    const toatRef = toast.loading("Criando aposta...");
+
+    const betOwnerType = !disabledWinHome ? "home" : !disabledWinAway ? "away" : "draw";
+    const newBet: Bet = {
+      matchId: match.partida_id,
+      betOwnerAddress: currentSession?.address ?? "",
+      betValue: parseFloat(value),
+      betOwnerType: betOwnerType, 
+    };
+
+    BlockchainService.createBet(newBet)
+    .then(() => {
+      toast.success("Aposta criada com sucesso!");
+    }).catch((e) => {
+      console.log(e);
+      toast.error("Erro ao criar aposta");
+    }).finally(() => {
+      toast.dismiss(toatRef);
+    });
   };
 
   useEffect(() => {
@@ -114,7 +133,7 @@ export const CreateBetModal = ({
     <Dialog
       open={isOpen}
       onClose={() => {
-        handleClick();
+        handleClose();
         handleResetAll();
       }}
     >
@@ -140,7 +159,7 @@ export const CreateBetModal = ({
         <div
           style={{ marginRight: "2%", marginTop: "2%", cursor: "pointer" }}
           onClick={() => {
-            handleClick();
+            handleClose();
             handleResetAll();
           }}
         >
@@ -322,6 +341,7 @@ export const CreateBetModal = ({
         />
         <CreateBetButton
           disabledButton={disabledCreateButton}
+          disabled={disabledCreateButton}
           onClick={createBet}
         >
           <MainText type="Medium" style={{ fontSize: "15px" }}>

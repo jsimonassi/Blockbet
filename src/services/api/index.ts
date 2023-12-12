@@ -9,8 +9,21 @@ const getMatches = (champioshipId: number) => {
   });
 };
 
+const getMatchById = (matchId: number) => {
+  //TODO: Replace with api call
+  return new Promise<Match>((resolve, reject) => {
+      const match = MatchMock.find((match) => match.partida_id === matchId);
+      if (match) {
+        resolve(match);
+      } else {
+        reject("Match not found");
+      }
+  });
+};
+
 export const Api = {
   getMatches,
+  getMatchById
 };
 
 const MatchMock = [

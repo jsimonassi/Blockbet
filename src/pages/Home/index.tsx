@@ -3,7 +3,6 @@ import {
   Box,
   Dialog,
   DialogContent,
-  DialogTitle,
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
@@ -27,15 +26,18 @@ import {
   TrophyContainer,
   TrophyStyled,
 } from "./styles";
+import { BlockchainService } from "../../services/blockchain";
+import { Bet, OpenedBet } from "../../types/Bet";
+import { Api } from "../../services";
 
-export const Home = ({ classes }: any) => {
+export const Home = () => {
   const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState("");
+  const [availableBets, setAvailableBets] = useState<OpenedBet[]>([]);
   const [disabledDraw, setDisabledDraw] = useState(true);
   const [disabledWin, setDisabledWin] = useState(true);
   const [checkboxValue, setCheckboxValue] = useState(false);
 
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleClickBet = () => {
     setOpenModal((prev) => !prev);
@@ -61,6 +63,29 @@ export const Home = ({ classes }: any) => {
       setDisabledWin(true);
     }
   }, [checkboxValue, value]);
+
+  useEffect(() => {
+
+    const runAsync = async () => {
+      const betList: Bet[] = await BlockchainService.getAllBalances();
+      const openedBetList: OpenedBet[] = [];
+      if (betList && betList.length > 0) {
+        betList.forEach(async (bet) => {
+          const foundMatch = await Api.getMatchById(bet.matchId);
+          if (foundMatch) {
+            openedBetList.push({
+              bet,
+              match: foundMatch
+            });
+          }
+        });
+      }
+
+      setAvailableBets(openedBetList);
+    };
+
+    runAsync();
+  }, []);
 
   return (
     <OverlayBackground>
@@ -91,10 +116,14 @@ export const Home = ({ classes }: any) => {
           </MainText>
         </div>
 
-        <AvailBet handleClickBet={handleClickBet} />
-        <AvailBet handleClickBet={handleClickBet} />
-        <AvailBet handleClickBet={handleClickBet} />
+        {availableBets && availableBets.length > 0 && availableBets.map((bet, index) => {
+          return (
+            <AvailBet key={index} currentBet={bet} handleClickBet={handleClickBet} />
+          );
+        })}
       </PageContainer>
+
+
       {openModal && (
         <Dialog
           open={openModal}
