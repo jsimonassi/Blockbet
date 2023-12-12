@@ -6,7 +6,7 @@ import {
 	Navigate
 } from "react-router-dom";
 import { CONSTANTS } from "../../constants";
-import { SignIn } from "../../pages/SignIn";
+import { SignIn } from "../../pages";
 
 export const AuthRoutes = () => {
 
@@ -15,7 +15,7 @@ export const AuthRoutes = () => {
 		<Router>
 			<Routes>
 				{/* If enter in this stack without login, redirect */}
-				<Route path="/" element={<Navigate to={CONSTANTS.ROUTES.SIGN_IN} />} />
+				<Route path="*" element={<Navigate to={CONSTANTS.ROUTES.SIGN_IN} />} />
 				<Route path={CONSTANTS.ROUTES.SIGN_IN} element={<SignIn />} />
 			</Routes>
 		</Router>
