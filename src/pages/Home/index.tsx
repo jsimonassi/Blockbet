@@ -7,8 +7,13 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
-import React, { useState } from "react";
-import { MainText, Navbar, OverlayBackground, PageContainer } from "../../components";
+import React, { useEffect, useState } from "react";
+import {
+  MainText,
+  Navbar,
+  OverlayBackground,
+  PageContainer,
+} from "../../components";
 import { THEMES } from "../../constants/theme";
 import { AvailBet } from "./AvailBet";
 import { ShieldImage } from "./AvailBet/styles";
@@ -25,12 +30,37 @@ import {
 
 export const Home = ({ classes }: any) => {
   const [openModal, setOpenModal] = useState(false);
+  const [value, setValue] = useState("");
+  const [disabledDraw, setDisabledDraw] = useState(true);
+  const [disabledWin, setDisabledWin] = useState(true);
+  const [checkboxValue, setCheckboxValue] = useState(false);
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const handleClickBet = () => {
     setOpenModal((prev) => !prev);
   };
+
+  const handleBet = () => {
+    console.log("cliquei");
+  };
+
+  const handleResetAll = () => {
+    setDisabledDraw(true);
+    setDisabledWin(true);
+    setValue("");
+    setCheckboxValue(false);
+  };
+
+  useEffect(() => {
+    if (checkboxValue && value !== "") {
+      setDisabledDraw(false);
+      setDisabledWin(false);
+    } else {
+      setDisabledDraw(true);
+      setDisabledWin(true);
+    }
+  }, [checkboxValue, value]);
 
   return (
     <OverlayBackground>
@@ -68,7 +98,10 @@ export const Home = ({ classes }: any) => {
       {openModal && (
         <Dialog
           open={openModal}
-          onClose={handleClickBet}
+          onClose={() => {
+            handleClickBet();
+            handleResetAll();
+          }}
           PaperProps={{
             style: {
               minHeight: "20vh",
@@ -87,11 +120,48 @@ export const Home = ({ classes }: any) => {
               alignItems: "flex-start",
             }}
           >
-            <DialogTitle style={{ display: "flex" }}>
-              <MainText type="Bold" align="left" style={{ fontSize: "15px" }}>
-                Confirmar aposta
+            <div
+              style={{
+                backgroundColor: THEMES.DARK_THEME.palette.surface1,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <MainText
+                type={"Medium"}
+                style={{
+                  fontSize: "22px",
+                  color: THEMES.DARK_THEME.palette.textPrimary,
+                  marginLeft: "5%",
+                  marginTop: "2%",
+                }}
+              >
+                Criar aposta
               </MainText>
-            </DialogTitle>
+              <div
+                style={{
+                  marginRight: "2%",
+                  marginTop: "2%",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  handleClickBet();
+                  handleResetAll();
+                }}
+              >
+                <MainText
+                  type="Bold"
+                  align="end"
+                  style={{
+                    fontSize: "22px",
+                    color: THEMES.DARK_THEME.palette.primaryColor,
+                  }}
+                >
+                  X
+                </MainText>
+              </div>
+            </div>
 
             <DialogContent
               style={{
@@ -200,6 +270,10 @@ export const Home = ({ classes }: any) => {
                   </MainText>
                 </div>
                 <input
+                  value={value}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
                   style={{
                     borderRadius: "8px",
                     border: "0px",
@@ -215,7 +289,14 @@ export const Home = ({ classes }: any) => {
                   color: "",
                 }}
                 color="primary"
-                control={<Checkbox color="primary" size="small" />}
+                control={
+                  <Checkbox
+                    checked={checkboxValue}
+                    onClick={() => setCheckboxValue((prev) => !prev)}
+                    color="primary"
+                    size="small"
+                  />
+                }
                 label={
                   <div style={{ display: "flex" }}>
                     <MainText
@@ -245,7 +326,11 @@ export const Home = ({ classes }: any) => {
                   gap: "2%",
                 }}
               >
-                <ButtonDrawBet>
+                <ButtonDrawBet
+                  disabled={disabledDraw}
+                  disabledDraw={disabledDraw}
+                  onClick={handleBet}
+                >
                   <MainText
                     type="Medium"
                     style={{ fontSize: "14px", color: "#E27031" }}
@@ -253,7 +338,11 @@ export const Home = ({ classes }: any) => {
                     Empate
                   </MainText>
                 </ButtonDrawBet>
-                <ButtonCoverBet>
+                <ButtonCoverBet
+                  onClick={handleBet}
+                  disabled={disabledWin}
+                  disabledWin={disabledWin}
+                >
                   <MainText type="Medium" style={{ fontSize: "14px" }}>
                     Vitória
                   </MainText>

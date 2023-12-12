@@ -16,14 +16,20 @@ export const ExpandableInfosStyled = styled.div`
   align-items: center;
   height: 100%;
   width: 20%;
+  cursor: pointer;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.04);
   }
 `;
 
 export const LogoStyled = styled.img`
   margin-left: 2vw;
   max-width: 300px;
+`;
+
+export const PerfilStyled = styled.img`
+  width: 30px;
+  cursor: pointer;
 `;
 
 export const NavbarProfile = styled.div`
