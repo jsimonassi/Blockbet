@@ -70,6 +70,8 @@ export const InputValueContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1vw;
+  margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 export const CreateBetContainer = styled.div`

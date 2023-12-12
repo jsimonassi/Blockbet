@@ -6,6 +6,7 @@ export interface AppTheme {
     surface1: string;
     surface2: string;
     surface3: string;
+    surface4: string;
 
     gradientStart: string;
     gradientEnd: string;

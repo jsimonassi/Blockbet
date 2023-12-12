@@ -9,6 +9,7 @@ const DARK_THEME: AppTheme = {
     surface1: "#737373", //Cards and first layer surfaces
     surface2: "#D9D9D9", // Surface over surface1
     surface3: "#272727", //Header and footer, if exists
+    surface4: "#7C462B",
 
     gradientStart: "#E27031",
     gradientEnd: "#B56639",

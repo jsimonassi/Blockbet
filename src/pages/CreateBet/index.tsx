@@ -53,6 +53,8 @@ export const CreateBet = () => {
     setLoading(true);
     Api.getMatches(10).then((response) => {
       setAvailableMatches(response);
+    }).finally(() => {
+      setLoading(false);
     });
   };
 
@@ -61,10 +63,9 @@ export const CreateBet = () => {
   };
 
   useEffect(() => {
-    setLoading(false);
-  }, [availableMatches]);
+    onChampionshipClick();
+  }, []);
 
-  console.log(loading, "loading");
   return (
     <OverlayBackground>
       <Navbar />

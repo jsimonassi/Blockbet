@@ -35,7 +35,7 @@ export const getAllBets = async (): Promise<Bet[]> => {
 
                     return JSON.parse(stringModified);
                 }) : [];
-
+        console.log("Devolvendo essas bets: ", arrayOfObjects);
         return Promise.resolve(arrayOfObjects);
     } catch (error) {
         console.log(error);

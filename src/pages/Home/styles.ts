@@ -39,6 +39,7 @@ export const TitleOverlayBrasileiro = styled.h1`
   font-family: NotoSerifTamilSlanted;
   font-style: italic;
   font-size: 25px;
+  font-family: "NovaFlat";
 `;
 
 export const TextOverlayBrasileiro = styled.div`
@@ -54,8 +55,8 @@ export const TextOverlayBrasileiro = styled.div`
 export const BrasileiraoText = styled.h1`
   color: #fff;
 
-  font-family: "Nova Flat" !important;
-  font-size: 48px;
+  font-family: "NovaFlat";
+  font-size: 90px;
   font-weight: 400;
   line-height: normal;
 `;
@@ -96,7 +97,8 @@ export const ButtonCoverBet = styled.button<WinButtonProps>`
   border-radius: 5px;
   color: #fff;
   height: 4vh;
-  width: 5vw;
+  padding-left: 10px;
+  padding-right: 10px;
   border: none;
   opacity: ${(props) => (props.disabledWin ? 0.5 : 1)};
   cursor: pointer;

@@ -20,8 +20,7 @@ export const EscudosContainer = styled.div`
   gap: 5%;
   margin-bottom: 2%;
   img {
-    width: 60px;
-    height: 60px;
+    height: 80px;
   }
 `;
 

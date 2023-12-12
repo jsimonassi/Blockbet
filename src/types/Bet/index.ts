@@ -5,10 +5,13 @@ export interface Bet {
     betOwnerAddress: string;
     betCoverAddress?: string;
     betValue: number;
-    betOwnerType: "home" | "away" | "draw";
-    betCoverType?: "home" | "away" | "draw";
-    result?: "home" | "away" | "draw";
+    betOwnerType: CoverType;
+    betCoverType?: CoverType;
+    result?: CoverType;
+    uuid?: string;
 }
+
+export type CoverType = "home" | "away" | "draw"
 
 export interface OpenedBet {
     match: Match;

@@ -24,7 +24,7 @@ export const ModalMetamaskNotFound = (props: OwnProps) => {
             onClose={props.onClose}
             PaperProps={{
                 style: {
-                    borderRadius: "16px",
+                    borderRadius: "8px",
                     maxWidth: "450px",
                 },
             }}

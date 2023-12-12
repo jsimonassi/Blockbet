@@ -113,6 +113,12 @@ export const CreateBetModal = ({
       betOwnerType: betOwnerType, 
     };
 
+    if(!currentSession?.balance || newBet.betValue > currentSession?.balance){
+      toast.dismiss(toatRef);
+      toast.error("Saldo insuficiente");
+      return;
+    }
+
     BlockchainService.createBet(newBet)
     .then(() => {
       toast.success("Aposta criada com sucesso!");
@@ -135,6 +141,16 @@ export const CreateBetModal = ({
       onClose={() => {
         handleClose();
         handleResetAll();
+      }}
+      style={{borderRadius: "32px"}}
+
+      PaperProps={{
+        style: {
+            minHeight: "20vh",
+            minWidth: "25vw",
+            borderRadius: "8px",
+            justifyContent: "flex-start",
+        },
       }}
     >
       <div
@@ -236,10 +252,6 @@ export const CreateBetModal = ({
                 )}
               </MainText>
             </WinButton>
-
-            <MainText type="Medium" style={{ fontSize: "15px" }}>
-              ● ODD
-            </MainText>
           </BetContainer>
           <BetContainer>
             <DrawButton
@@ -260,9 +272,6 @@ export const CreateBetModal = ({
                 Empate
               </MainText>
             </DrawButton>
-            <MainText type="Medium" style={{ fontSize: "15px" }}>
-              ● ODD
-            </MainText>
           </BetContainer>
           <BetContainer>
             <WinButton
@@ -280,9 +289,6 @@ export const CreateBetModal = ({
                 )}
               </MainText>
             </WinButton>
-            <MainText type="Medium" style={{ fontSize: "15px" }}>
-              ● ODD
-            </MainText>
           </BetContainer>
         </DialogActions>
         <InputValueContainer>

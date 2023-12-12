@@ -4,16 +4,14 @@ import { Bet } from "../../../types/Bet";
 import { AvailableFunctions } from "../../../constants/availableFunctions";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers } from "ethers";
-import { v4 as uuidv4 } from "uuid";
 
 const HARDHAT_DEFAULT_MNEMONIC =
     "test test test test test test test test test test test junk";
-export const createBet = async (bet: Bet): Promise<void> => {
+export const coverBet = async (bet: Bet): Promise<void> => {
     try {
         const web3 = new Web3((window as any).ethereum);
         const inputString = JSON.stringify({
-            function_id: AvailableFunctions.CREATE_BET,
-            uuid: uuidv4(),
+            function_id: AvailableFunctions.COVER_BET,
             ...bet
         });
         const inputHex = web3.utils.utf8ToHex(inputString);

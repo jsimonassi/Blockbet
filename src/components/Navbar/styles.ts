@@ -24,7 +24,7 @@ export const ExpandableInfosStyled = styled.div`
 
 export const LogoStyled = styled.img`
   margin-left: 2vw;
-  max-width: 300px;
+  width: 230px;
 `;
 
 export const PerfilStyled = styled.img`

@@ -1,25 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+import React, { useEffect, useRef, useState } from "react";
 import {
-  Box,
-  Dialog,
-  DialogContent,
-  Checkbox,
-  FormControlLabel,
-} from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import {
+  MainButton,
   MainText,
   Navbar,
   OverlayBackground,
   PageContainer,
 } from "../../components";
-import { THEMES } from "../../constants/theme";
 import { AvailBet } from "./AvailBet";
-import { ShieldImage } from "./AvailBet/styles";
 import {
   BrasileiraoText,
-  ButtonCoverBet,
-  ButtonDrawBet,
   OverlayBrasileiro,
   TextOverlayBrasileiro,
   TitleOverlayBrasileiro,
@@ -29,48 +20,42 @@ import {
 import { BlockchainService } from "../../services/blockchain";
 import { Bet, OpenedBet } from "../../types/Bet";
 import { Api } from "../../services";
+import { useSessionContext } from "../../contexts/Session";
+import { CoverBetModal } from "./CoverBetModal";
+import { useTheme } from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
+import toast from "react-hot-toast";
+
 
 export const Home = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [value, setValue] = useState("");
+  const currentTheme = useTheme();
+  const navigate = useNavigate();
   const [availableBets, setAvailableBets] = useState<OpenedBet[]>([]);
-  const [disabledDraw, setDisabledDraw] = useState(true);
-  const [disabledWin, setDisabledWin] = useState(true);
-  const [checkboxValue, setCheckboxValue] = useState(false);
+  const selectedBetRef = useRef<OpenedBet | null>(null);
 
+  const { currentSession } = useSessionContext();
 
-  const handleClickBet = () => {
-    setOpenModal((prev) => !prev);
-  };
+  const handleClickBet = (bet: OpenedBet | null) => {
 
-  const handleBet = () => {
-    console.log("cliquei");
-  };
-
-  const handleResetAll = () => {
-    setDisabledDraw(true);
-    setDisabledWin(true);
-    setValue("");
-    setCheckboxValue(false);
-  };
-
-  useEffect(() => {
-    if (checkboxValue && value !== "") {
-      setDisabledDraw(false);
-      setDisabledWin(false);
-    } else {
-      setDisabledDraw(true);
-      setDisabledWin(true);
+    if(bet && currentSession?.balance && bet?.bet.betValue > currentSession?.balance){
+      toast.error("Saldo insuficiente");
+      return;
     }
-  }, [checkboxValue, value]);
+
+    setOpenModal((prev) => !prev);
+    selectedBetRef.current = bet;
+  };
 
   useEffect(() => {
 
     const runAsync = async () => {
-      const betList: Bet[] = await BlockchainService.getAllBalances();
+      const betList: Bet[] = await BlockchainService.getAllBets();
+      const filteredList: Bet[] = betList.filter((bet) => bet.betOwnerAddress !== currentSession?.address && !bet?.betCoverAddress);
       const openedBetList: OpenedBet[] = [];
-      if (betList && betList.length > 0) {
-        betList.forEach(async (bet) => {
+      if (filteredList.length > 0) {
+        filteredList.forEach(async (bet) => {
           const foundMatch = await Api.getMatchById(bet.matchId);
           if (foundMatch) {
             openedBetList.push({
@@ -86,6 +71,83 @@ export const Home = () => {
 
     runAsync();
   }, []);
+
+
+  const getBetsContent = () => {
+
+    if (availableBets.length === 0) {
+      return (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "4vh",
+            flexDirection: "column",
+            height: "200%",
+          }}
+        >
+          <MainText type="Bold" style={{ fontSize: "22px" }}>
+            Nenhuma aposta disponível
+          </MainText>
+
+          <MainText type="Light" style={{ fontSize: "18px", color: currentTheme.palette.textSecondary }}>
+            Quando algum usuário criar uma aposta, ela ficará disponível para sua cobertura!
+          </MainText>
+          <MainButton
+            type="Secondary"
+            onClick={() => navigate(ROUTES.CREATE_BET)}
+            text="Criar aposta"
+            style={{ marginTop: "4vh", width: "50%", marginBottom: "2vh" }}
+          />
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%" }}>
+            <hr style={{ width: "20%", opacity: 0.5 }} />
+            <MainText type="Light" style={{ fontSize: "18px", marginLeft: "10px", marginRight: "10px", color: currentTheme.palette.textSecondary }}>
+              ou
+            </MainText>
+            <hr style={{ width: "20%", opacity: 0.5 }} />
+          </div>
+          <div onClick={() => navigate(ROUTES.HISTORY)}>
+            <MainText
+              type="Light"
+              style={{
+                fontSize: "18px",
+                marginTop: "1vh",
+                color: currentTheme.palette.primaryColor,
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}>
+              Ver minhas apostas
+            </MainText>
+          </div>
+        </div>
+
+      );
+    }
+
+    return (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            marginBottom: "4vh",
+          }}
+        >
+          <MainText type="Bold" style={{ fontSize: "22px" }}>
+            Apostas disponíveis
+          </MainText>
+        </div>
+        {
+          availableBets.map((bet, index) => {
+            return (
+              <AvailBet key={index} currentBet={bet} handleClickBet={() => handleClickBet(bet)} />
+            );
+          })}
+      </>
+    );
+
+  };
 
   return (
     <OverlayBackground>
@@ -104,283 +166,9 @@ export const Home = () => {
           </TrophyContainer>
         </OverlayBrasileiro>
         <div style={{ height: "5vh" }}></div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            marginBottom: "4vh",
-          }}
-        >
-          <MainText type="Bold" style={{ fontSize: "22px" }}>
-            Apostas disponíveis
-          </MainText>
-        </div>
-
-        {availableBets && availableBets.length > 0 && availableBets.map((bet, index) => {
-          return (
-            <AvailBet key={index} currentBet={bet} handleClickBet={handleClickBet} />
-          );
-        })}
+        {getBetsContent()}
       </PageContainer>
-
-
-      {openModal && (
-        <Dialog
-          open={openModal}
-          onClose={() => {
-            handleClickBet();
-            handleResetAll();
-          }}
-          PaperProps={{
-            style: {
-              minHeight: "20vh",
-              minWidth: "25vw",
-              borderRadius: "25px",
-              justifyContent: "flex-start",
-            },
-          }}
-        >
-          <Box
-            style={{
-              display: "column",
-              backgroundColor: THEMES.DARK_THEME.palette.surface1,
-              top: "50%",
-              left: "50%",
-              alignItems: "flex-start",
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: THEMES.DARK_THEME.palette.surface1,
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <MainText
-                type={"Medium"}
-                style={{
-                  fontSize: "22px",
-                  color: THEMES.DARK_THEME.palette.textPrimary,
-                  marginLeft: "5%",
-                  marginTop: "2%",
-                }}
-              >
-                Criar aposta
-              </MainText>
-              <div
-                style={{
-                  marginRight: "2%",
-                  marginTop: "2%",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  handleClickBet();
-                  handleResetAll();
-                }}
-              >
-                <MainText
-                  type="Bold"
-                  align="end"
-                  style={{
-                    fontSize: "22px",
-                    color: THEMES.DARK_THEME.palette.primaryColor,
-                  }}
-                >
-                  X
-                </MainText>
-              </div>
-            </div>
-
-            <DialogContent
-              style={{
-                display: "column",
-                alignItems: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  gap: "1vw",
-                  marginBottom: "1vh",
-                }}
-              >
-                <ShieldImage
-                  src={require("../../assets/images/Botafogo.png")}
-                  alt="Logo"
-                />
-                <MainText type="Bold" style={{ fontSize: "22px" }}>
-                  X
-                </MainText>
-                <ShieldImage
-                  src={require("../../assets/images/Coritiba.png")}
-                  alt="Logo"
-                />
-              </div>
-              <MainText
-                type="Medium"
-                style={{ fontSize: "15px", color: "#C7C7C7" }}
-              >
-                01/01/2023 - 16:00
-              </MainText>
-              <MainText type="Bold" style={{ fontSize: "15px" }}>
-                Botafogo x Coritiba
-              </MainText>
-              <div
-                style={{
-                  display: "column",
-                  width: "100%",
-                  alignItems: "flex-start",
-                  marginTop: "2vh",
-                }}
-              >
-                <MainText type="Bold" align="left" style={{ fontSize: "15px" }}>
-                  Gustavo Luppi Siloto
-                </MainText>
-                <div
-                  style={{
-                    display: "column",
-                    marginLeft: "1vw",
-                    marginBottom: "1vh",
-                    marginTop: "1vh",
-                  }}
-                >
-                  <div style={{ display: "flex", marginBottom: "1vh" }}>
-                    <MainText
-                      type="Bold"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      ●
-                    </MainText>
-                    <MainText
-                      type="Bold"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      Botafogo vence
-                    </MainText>
-                  </div>
-
-                  <div style={{ display: "flex", marginBottom: "1vh" }}>
-                    <MainText
-                      type="Bold"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      ●
-                    </MainText>
-                    <MainText
-                      type="Medium"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      Valor R$ 50,00
-                    </MainText>
-                  </div>
-                  <div style={{ display: "flex", marginBottom: "1vh" }}>
-                    <MainText
-                      type="Bold"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      ●
-                    </MainText>
-                    <MainText
-                      type="Medium"
-                      style={{ fontSize: "14px", color: "#C7C7C7" }}
-                    >
-                      ODD 2.0
-                    </MainText>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", marginBottom: "0.5vh" }}>
-                  <MainText type="Medium" style={{ fontSize: "14px" }}>
-                    Valor da cobertura:
-                  </MainText>
-                </div>
-                <input
-                  value={value}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                  }}
-                  style={{
-                    borderRadius: "8px",
-                    border: "0px",
-                    backgroundColor: "#D9D9D9",
-                    height: "5vh",
-                    width: "9vw",
-                    outline: "none",
-                  }}
-                ></input>
-              </div>
-              <FormControlLabel
-                style={{
-                  color: "",
-                }}
-                color="primary"
-                control={
-                  <Checkbox
-                    checked={checkboxValue}
-                    onClick={() => setCheckboxValue((prev) => !prev)}
-                    color="primary"
-                    size="small"
-                  />
-                }
-                label={
-                  <div style={{ display: "flex" }}>
-                    <MainText
-                      type="Medium"
-                      style={{
-                        fontSize: "14px",
-                        color: "#c7c7c7",
-                        marginRight: "4px",
-                      }}
-                    >
-                      Concordo com os
-                    </MainText>
-                    <MainText
-                      type="Medium"
-                      style={{ fontSize: "14px", color: "#5FA5E5" }}
-                    >
-                      termos de uso
-                    </MainText>
-                  </div>
-                }
-              />
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "flex-end",
-                  gap: "2%",
-                }}
-              >
-                <ButtonDrawBet
-                  disabled={disabledDraw}
-                  disabledDraw={disabledDraw}
-                  onClick={handleBet}
-                >
-                  <MainText
-                    type="Medium"
-                    style={{ fontSize: "14px", color: "#E27031" }}
-                  >
-                    Empate
-                  </MainText>
-                </ButtonDrawBet>
-                <ButtonCoverBet
-                  onClick={handleBet}
-                  disabled={disabledWin}
-                  disabledWin={disabledWin}
-                >
-                  <MainText type="Medium" style={{ fontSize: "14px" }}>
-                    Vitória
-                  </MainText>
-                </ButtonCoverBet>
-              </div>
-            </DialogContent>
-          </Box>
-        </Dialog>
-      )}
+      <CoverBetModal openedBet={selectedBetRef.current} openModal={openModal} handleClickBet={() => handleClickBet(null)} />
     </OverlayBackground>
   );
 };

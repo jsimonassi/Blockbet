@@ -11,6 +11,7 @@ import { THEMES } from "../../../../constants/theme";
 import Web3 from "web3";
 import { EtherPortal__factory } from "@cartesi/rollups";
 import toast from "react-hot-toast";
+import { useTheme } from "styled-components";
 
 
 interface CreateBetModalProps {
@@ -28,29 +29,30 @@ export const AddCashModal = ({
 }: CreateBetModalProps) => {
 
   const [value, setValue] = useState("");
+  const currentTheme = useTheme();
+  const web3 = new Web3((window as any).ethereum);
 
   const handleAddCash = async (cash: number) => {
     handleClose();
     const toastRef = toast.loading("Adicionando saldo...");
     try {
-      if(cash <= 0) return;
-  
-      const web3 = new Web3((window as any).ethereum);
+      if (cash <= 0) return;
+
       const web3Contract = new web3.eth.Contract(
         EtherPortal__factory.abi,
         (window as any).env.LOCALHOST_ETHER_PORTAL_ADDRESS
       );
-  
+
       const etherValue = web3.utils.toWei(value.toString(), "ether");
       await web3Contract.methods.depositEther((window as any).env.LOCALHOST_DAPP_ADDRESS, "0x").send({
         from: address,
         value: etherValue,
       });
       toast.success("Saldo adicionado com sucesso");
-    }catch(e) {
+    } catch (e) {
       toast.error("Erro ao adicionar saldo");
       console.log(e);
-    }finally{
+    } finally {
       toast.dismiss(toastRef);
       requestUpdateBalance();
     }
@@ -61,6 +63,14 @@ export const AddCashModal = ({
       open={isOpen}
       onClose={() => {
         handleClose();
+      }}
+      PaperProps={{
+        style: {
+          minHeight: "230px",
+          minWidth: "400px",
+          borderRadius: "8px",
+          justifyContent: "flex-start",
+        }
       }}
     >
       <div
@@ -93,7 +103,7 @@ export const AddCashModal = ({
             align="end"
             style={{
               fontSize: "22px",
-              color: THEMES.DARK_THEME.palette.primaryColor,
+              color: currentTheme.palette.icons,
             }}
           >
             X
@@ -102,7 +112,7 @@ export const AddCashModal = ({
       </div>
       <DialogContent
         style={{
-          backgroundColor: THEMES.DARK_THEME.palette.surface1,
+          backgroundColor: currentTheme.palette.surface1,
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
@@ -113,7 +123,6 @@ export const AddCashModal = ({
           <MainText type="Bold" style={{ fontSize: "15px" }}>
             Valor (ETH):
           </MainText>
-
           <input
             value={value}
             type="number"
@@ -130,6 +139,9 @@ export const AddCashModal = ({
             }}
           />
         </InputValueContainer>
+        <MainText type="Light" style={{ fontSize: "15px", marginTop: "10px", marginBottom:  "20px" }}>
+            Valor aproximado (FireCoins): {web3.utils.toWei(value.toString(), "ether")}
+          </MainText>
         <MainButton type="Primary" onClick={() => value !== "" && handleAddCash(Number(value))} text="Adicionar" />
       </DialogContent>
     </Dialog>
