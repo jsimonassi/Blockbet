@@ -9,7 +9,6 @@ import { MatchCard, SelectChampionship } from "./Components";
 import { ResultsContainer, ResultsMatches } from "./styles";
 import { Match } from "../../types/api/Match";
 import { Api } from "../../services";
-import { send } from "../../services/blockchain";
 import { CreateBetModal } from "./Components/CreateBetModal";
 import { CircularProgress } from "@material-ui/core";
 import { THEMES } from "../../constants/theme";

@@ -28,7 +28,7 @@ export const LogoStyled = styled.img`
 `;
 
 export const PerfilStyled = styled.img`
-  width: 30px;
+  width: 50px;
   cursor: pointer;
 `;
 
