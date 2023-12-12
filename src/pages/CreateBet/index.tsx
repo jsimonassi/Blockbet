@@ -4,7 +4,7 @@ import { MatchCard, SelectChampionship } from "./Components";
 import { ResultsContainer, ResultsMatches } from "./styles";
 import { Match } from "../../types/api/Match";
 import { Api } from "../../services";
-import { createBetTest } from "../../services/blockchain";
+import { send } from "../../services/blockchain";
 
 export const CreateBet = () => {
 
@@ -18,7 +18,7 @@ export const CreateBet = () => {
 
     const handleCreateBet = () => {
         console.log("Cliquei");
-        createBetTest();
+        send();
     };
 
     return (

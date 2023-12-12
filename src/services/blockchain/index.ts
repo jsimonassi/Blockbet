@@ -1,50 +1,37 @@
-import { InputBox__factory } from "@cartesi/rollups";
-import { ethers } from "ethers";
-import { JsonRpcProvider } from "@ethersproject/providers";
-const HARDHAT_LOCALHOST_RPC_URL = "http://localhost:8545";
-const HARDHAT_DEFAULT_MNEMONIC = "test test test test test test test test test test test junk";
-const accountIndex = 0;
-const INPUTBOX_ADDRESS = "0x59b22D57D4f067708AB0c00552767405926dc768";
-const DAPP_ADDRESS = "0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C";
+import Web3 from "web3";
+import { IInputBox__factory } from "@cartesi/rollups/";
 
 
-export const send = async () => {
-    const value = "Hello World!";
-       
-        // Start a connection
-        const provider = new JsonRpcProvider(HARDHAT_LOCALHOST_RPC_URL);
-        const signer = ethers.Wallet.fromMnemonic(
-            HARDHAT_DEFAULT_MNEMONIC,
-            `m/44'/60'/0'/0/${accountIndex}`
-        ).connect(provider);
+const VITE_LOCALHOST_DAPP_ADDRESS = "0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C"; //TODO: Replace pela nossa
+const VITE_LOCALHOST_INPUTBOX_ADDRESS = "0x59b22D57D4f067708AB0c00552767405926dc768"; //TODO: Replace pela nossa
 
-        // Instantiate the InputBox contract
-        const inputBox = InputBox__factory.connect(
-            INPUTBOX_ADDRESS,
-            signer
-        );
+export async function send() {
+  const localStorareUser = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
-        // Encode the input
-        const inputBytes = ethers.utils.isBytesLike(value) ? value : ethers.utils.toUtf8Bytes(value);
-
-        // Send the transaction
-        const tx = await inputBox.addInput(DAPP_ADDRESS, inputBytes);
-        console.log(`transaction: ${tx}`);
-
-        // Wait for confirmation
-        console.log("waiting for confirmation...");
-        const receipt = await tx.wait(1);
-
-        // Search for the InputAdded event
-        const event = receipt.events?.find((e) => e.event === "InputAdded");
-
-        // toast({
-        //     title: "Transaction Confirmed",
-        //     description: `Input added => index: ${event?.args.inputIndex} `,
-        //     status: "success",
-        //     duration: 9000,
-        //     isClosable: true,
-        //     position: "top-left",
-        // });
-        console.log(`Input added => index: ${event?.args?.inputIndex} `);
-};
+  try {
+    const web3 = new Web3((window as any).ethereum);
+    const inputContract = new web3.eth.Contract(
+        IInputBox__factory.abi,
+      VITE_LOCALHOST_INPUTBOX_ADDRESS
+    );
+    const input = {
+      function_id: 1,
+      needToNotice: true,
+      car_id_1: "sablau",
+      user_id_1: localStorareUser,
+      created_at: new Date(),
+    };
+    const inputString = JSON.stringify(input);
+    const inputHex = web3.utils.utf8ToHex(inputString);
+    try {
+      await inputContract.methods
+        .addInput(VITE_LOCALHOST_DAPP_ADDRESS as string, inputHex)
+        .send({ from: localStorareUser });
+        return true;
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.error("Error occurred while sending input:", error);
+  }
+}
